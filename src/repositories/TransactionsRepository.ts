@@ -23,7 +23,7 @@ class TransactionsRepository {
     return this.transactions
   }
 
-  summation(typeTransaction) {
+  summation(typeTransaction: string) {
     const tipo = this.transactions.filter( function( elem, index, array ) {
         return elem.type === typeTransaction
     } );
