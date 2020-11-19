@@ -69,11 +69,22 @@ class TransactionsRepository {
     return balance
   }
 
+  public validateTransaction(type, value) {
+    if (type == 'outcome') {
+      const { total } = this.getBalance()
+
+      if (total - value < 0) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
+  }
+
   public create({ title, value, type }: CreateTransaction): Transaction {
     const transaction = new Transaction({ title, value, type })
-
-    // TRATAR ERR "should not be able to create outcome transaction without a valid balance"
-    // não deve permitir que uma transação do tipo outcome extrapole o valor total que o usuário tem em caixa
 
     this.transactions.push(transaction)
 
