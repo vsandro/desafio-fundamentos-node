@@ -3,7 +3,7 @@ import Transaction from '../models/Transaction';
 interface CreateTransaction {
     title: string
     value: number
-    type: string
+    type: 'income' | 'outcome'
 }
 
 interface Balance {
@@ -23,41 +23,25 @@ class TransactionsRepository {
     return this.transactions
   }
 
-  sumIncome() {
+  summation(typeTransaction) {
     const tipo = this.transactions.filter( function( elem, index, array ) {
-        return elem.type === 'income'
+        return elem.type === typeTransaction
     } );
 
     const valores = tipo.map( function( elem ) {
       return elem.value
     })
 
-    var total = valores.reduce(function(total, numero) {
-      return total + numero
-    }, 0)
-
-    return total
-  }
-
-  sumOutcome() {
-    const tipo = this.transactions.filter( function( elem, index, array ) {
-        return elem.type === 'outcome'
-    } );
-
-    const valores = tipo.map( function( elem ) {
-      return elem.value
-    })
-
-    var total = valores.reduce(function(total, numero) {
-      return total + numero
+    var total = valores.reduce(function( sum, value ) {
+      return sum + value
     }, 0)
 
     return total
   }
 
   public getBalance(): Balance {
-    const income = this.sumIncome()
-    const outcome = this.sumOutcome()
+    const income = this.summation('income')
+    const outcome = this.summation('outcome')
     const total = income - outcome
 
     const balance = {
@@ -67,20 +51,6 @@ class TransactionsRepository {
     }
 
     return balance
-  }
-
-  public validateTransaction(type, value) {
-    if (type == 'outcome') {
-      const { total } = this.getBalance()
-
-      if (total - value < 0) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return true
-    }
   }
 
   public create({ title, value, type }: CreateTransaction): Transaction {

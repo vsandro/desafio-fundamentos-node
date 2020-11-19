@@ -4,7 +4,7 @@ import Transaction from '../models/Transaction';
 interface Request {
   title: string
   value: number
-  type: string
+  type: 'income' | 'outcome'
 }
 
 class CreateTransactionService {
@@ -16,10 +16,10 @@ class CreateTransactionService {
 
   public execute({ title, value, type }: Request): Transaction {
 
-    const validate = this.transactionsRepository.validateTransaction(type, value)
-    
-    if (!validate) {
-      throw Error('Transaction without a valid balance')
+    const { total } = this.transactionsRepository.getBalance();
+
+    if (type === 'outcome' && value > total) {
+      throw Error('Outcome maior que o valor total');
     }
 
     const transaction = this.transactionsRepository.create({
