@@ -31,6 +31,13 @@ Neste desafio, foi criada uma aplicação em **Node.js** aplicando os conhecimen
 - criar transação;
 - listar transações.
 
+<p align='center'>
+<img src='./app-page-1.png' alt='app page'> 
+</p>
+
+<p align='center'>
+<img src='./app-page-2.png' alt='app page'> 
+</p>
 
 ## 5. Instalação e execução. :octocat:
 
